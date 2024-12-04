@@ -1,26 +1,32 @@
 let packages = [];
 
+// Allow only alphabetical characters for Reception Name
 function validateRecipientName(name) {
     return /^[A-Za-z\s]+$/.test(name);
 }
 
+// Allow only numeric characters for Package ID
 function validatePackageId(id) {
     return /^\d+$/.test(id);
 }
 
+// Address cannot be empty
 function validateAddress(address) {
     return address.trim().length > 0;
 }
 
+// Weight should be a positive number
 function validateWeight(weight) {
     return !isNaN(weight) && parseFloat(weight) > 0;
 }
 
+// Generate tracking code by combining package ID and weight
 function generateTrackingCode(packageId, weight) {
     const weightInt = Math.floor(weight * 100);
     return (packageId << 4 | weightInt).toString(2);
 }
 
+// Add package to the list
 function addPackage(recipientName, packageId, address, weight) {
     if (!validateRecipientName(recipientName)) {
         throw new Error('Invalid Recipient Name. Please use alphabetic characters only.');
@@ -54,6 +60,7 @@ function sortPackages() {
     packages.sort((a, b) => a.weight - b.weight);
 }
 
+// Update the package list in the table
 function updatePackageList() {
     const tbody = document.getElementById('packageList');
     tbody.innerHTML = '';
@@ -68,6 +75,7 @@ function updatePackageList() {
     });
 }
 
+// Event listener for form submission
 document.getElementById('packageForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const messageDiv = document.getElementById('message');
